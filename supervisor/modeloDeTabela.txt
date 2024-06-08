@@ -1,0 +1,11 @@
+CREATE TABLE `tb_pessoa` (
+    `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+    `level` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+    `message` text COLLATE utf8mb4_unicode_ci NOT NULL,
+    `context` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+    `author` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+    `ip` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+    `created_at` timestamp NULL DEFAULT NULL,
+    `updated_at` timestamp NULL DEFAULT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB AUTO_INCREMENT = 19 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci

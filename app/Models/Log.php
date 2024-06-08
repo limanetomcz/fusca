@@ -9,6 +9,6 @@ class Log extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['level', 'message', 'context', 'author', 'ip'];
+    protected $fillable = ['operation', 'old_data', 'new_data', 'author', 'ip'];
 
 }

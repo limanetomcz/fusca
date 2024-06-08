@@ -20,6 +20,10 @@ services:
         volumes:
             - '.:/var/www/html'
             - './supervisor/laravel-worker.conf:/etc/supervisor/conf.d/laravel-worker.conf'
+        command: >
+            sh -c "
+            chown -R 1000:sail /var/www/html/storage &&
+            chmod -R 775 /var/www/html/storage"
         networks:
             - sail
         depends_on:
