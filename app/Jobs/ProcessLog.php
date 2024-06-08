@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -24,7 +25,7 @@ class ProcessLog implements ShouldQueue
     {
         $this->data = $data;
     }
-    
+
     /**
      * Execute the job.
      *
@@ -34,8 +35,18 @@ class ProcessLog implements ShouldQueue
     {
         $tableName = $this->data['table'];
         unset($this->data['table']);
-        $this->data['created_at'] = date('Y-m-d H:i:s');
-        $this->data['updated_at'] = date('Y-m-d H:i:s');
-        DB::table($tableName)->insert($this->data);
+
+        $prohibitedTables = [
+            'cache', 'cache_locks', 'failed_jobs', 'job_batches',
+            'jobs', 'logs', 'migrations', 'password_reset_tokens',
+            'sessions', 'users'
+        ];
+
+        if (!in_array($tableName, $prohibitedTables)) {
+            $currentTimestamp = Carbon::now()->toDateTimeString();
+            $this->data['created_at'] = $currentTimestamp;
+            $this->data['updated_at'] = $currentTimestamp;
+            DB::table($tableName)->insert($this->data);
+        }
     }
 }

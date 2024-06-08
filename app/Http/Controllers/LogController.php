@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\ProcessLog;
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
 
@@ -19,8 +20,18 @@ class LogController extends Controller
             'table' => 'required|string',
         ]);
 
-        if (!Schema::hasTable($validated['table'])) {
-            return response()->json(['error' => 'Invalid table name'], 400);
+        $table = $validated['table'];
+        
+        if (!Schema::hasTable($table)) {
+            Schema::create($table, function (Blueprint $table) {
+                $table->bigIncrements('id');
+                $table->string('author');
+                $table->string('ip')->nullable();
+                $table->timestamps();
+                $table->string('operation')->nullable();
+                $table->text('new_data')->nullable();
+                $table->text('old_data')->nullable();
+            });
         }
 
         ProcessLog::dispatch($validated);
