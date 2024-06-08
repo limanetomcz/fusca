@@ -19,11 +19,13 @@ services:
             IGNITION_LOCAL_SITES_PATH: '${PWD}'
         volumes:
             - '.:/var/www/html'
+            - './supervisor/laravel-worker.conf:/etc/supervisor/conf.d/laravel-worker.conf'
         networks:
             - sail
         depends_on:
             - mysql
             - redis
+        entrypoint: ["/var/www/html/start-supervisor.sh"]
     mysql:
         image: 'mysql/mysql-server:8.0'
         ports:
