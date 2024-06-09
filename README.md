@@ -30,7 +30,7 @@ Este projeto é uma API em Laravel para registrar logs de qualquer sistema de ge
     ```bash
     ./vendor/bin/sail up -d
 
-Gravar Logs
+## Gravar Logs
 
 Para gravar logs, envie uma requisição POST para a rota /api/logs com os seguintes dados no corpo da requisição:   
 
@@ -44,7 +44,7 @@ Para gravar logs, envie uma requisição POST para a rota /api/logs com os segui
 }
 
 
-Exemplo de uso com curl:
+## Exemplo de uso com curl:
 
 curl -X POST http://localhost/api/logs \
     -H "Content-Type: application/json" \
@@ -57,7 +57,7 @@ curl -X POST http://localhost/api/logs \
         "table":     "tb_usuario"
     }'
 
-Contribuição
+## Contribuição
 
 Faça um fork do projeto.
 Crie uma branch para sua feature (git checkout -b minha-feature).
@@ -66,7 +66,7 @@ Envie para a branch (git push origin minha-feature).
 Crie um novo Pull Request.    
 Entre em contato: lima@praticasti.com.br
 
-Licença
+## Licença
 Este projeto está licenciado sob a MIT License.
 
 Adapte o conteúdo conforme necessário para refletir com precisão as especificidades do seu projeto.
