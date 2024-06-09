@@ -26,6 +26,7 @@ services:
             chmod -R 775 /var/www/html/storage"
         networks:
             - sail
+            - sigonet
         depends_on:
             - mysql
             - redis
@@ -46,6 +47,7 @@ services:
             - './vendor/laravel/sail/database/mysql/create-testing-database.sh:/docker-entrypoint-initdb.d/10-create-testing-database.sh'
         networks:
             - sail
+            - sigonet
         healthcheck:
             test:
                 - CMD
@@ -62,6 +64,7 @@ services:
             - 'sail-redis:/data'
         networks:
             - sail
+            - sigonet
         healthcheck:
             test:
                 - CMD
