@@ -81,7 +81,7 @@ networks:
     sail:
         driver: bridge
     sigonet:
-        driver: bridge
+        external: true
 
 volumes:
     sail-mysql:
