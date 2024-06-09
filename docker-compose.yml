@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
     laravel.test:
         build:
@@ -31,6 +33,7 @@ services:
             - mysql
             - redis
         entrypoint: ["/var/www/html/start-supervisor.sh"]
+    
     mysql:
         image: 'mysql/mysql-server:8.0'
         ports:
@@ -56,6 +59,7 @@ services:
                 - '-p${DB_PASSWORD}'
             retries: 3
             timeout: 5s
+    
     redis:
         image: 'redis:alpine'
         ports:
@@ -72,9 +76,13 @@ services:
                 - ping
             retries: 3
             timeout: 5s
+
 networks:
     sail:
         driver: bridge
+    sigonet:
+        driver: bridge
+
 volumes:
     sail-mysql:
         driver: local
