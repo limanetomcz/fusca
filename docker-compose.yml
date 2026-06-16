@@ -2,6 +2,7 @@ version: '3.8'
 
 services:
     serverLog:
+        restart: unless-stopped
         build:
             context: ./vendor/laravel/sail/runtimes/8.3
             dockerfile: Dockerfile
@@ -35,6 +36,7 @@ services:
         entrypoint: ["/var/www/html/start-supervisor.sh"]
     
     mysql:
+        restart: unless-stopped
         image: 'mysql/mysql-server:8.0'
         ports:
             - '${FORWARD_DB_PORT:-3306}:3306'
@@ -61,6 +63,7 @@ services:
             timeout: 5s
     
     redis:
+        restart: unless-stopped
         image: 'redis:alpine'
         ports:
             - '${FORWARD_REDIS_PORT:-6379}:6379'
