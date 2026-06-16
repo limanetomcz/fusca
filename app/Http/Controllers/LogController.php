@@ -40,22 +40,42 @@ class LogController extends Controller
         return response()->json(['status' => 'Log queued for processing'], 201);
     }
 
-    public function getLog(Request $request) {
-        $parameters = $request->all();
-        $table = $parameters["table"];
-        $user = $parameters["user"];
-        $date_start = $parameters["date_start"];
-        $date_finish = $parameters["date_finish"];
+    public function getLog(Request $request)
+    {
+        $validated = $request->validate([
+            'table' => 'required|string|regex:/^[a-zA-Z0-9_]+$/',
+            'date_start' => 'required|date',
+            'date_finish' => 'required|date|after_or_equal:date_start',
+            'author' => 'nullable|string|max:255',
+        ]);
 
-       
-        if (!isset($table) || !isset($date_start) || !isset($date_finish)) {
-            return response()->json(['error' => 'Missing parameters'], 400);
+        if (!Schema::hasTable($validated['table'])) {
+            return response()->json(['error' => 'Tabela de log não encontrada'], 404);
         }
-    
-        $results = DB::table($table)
-            ->whereBetween('created_at', [$date_start, $date_finish])
-            ->get();
-    
+
+        $query = DB::table($validated['table'])
+            ->whereBetween('created_at', [
+                $validated['date_start'] . ' 00:00:00',
+                $validated['date_finish'] . ' 23:59:59',
+            ]);
+
+        if (!empty($validated['author'])) {
+            $query->where('author', 'like', '%' . $validated['author'] . '%');
+        }
+
+        $results = $query->orderByDesc('created_at')->get();
+
         return response()->json($results);
+    }
+
+    public function listTables()
+    {
+        $tables = collect(DB::select('SHOW TABLES'))
+            ->map(fn ($row) => array_values((array) $row)[0])
+            ->filter(fn ($table) => str_starts_with($table, 'uniodtb_'))
+            ->sort()
+            ->values();
+
+        return response()->json($tables);
     }
 }
