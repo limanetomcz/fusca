@@ -39,7 +39,7 @@ class ProcessLog implements ShouldQueue
         $prohibitedTables = [
             'cache', 'cache_locks', 'failed_jobs', 'job_batches',
             'jobs', 'logs', 'migrations', 'password_reset_tokens',
-            'sessions', 'users'
+            'sessions', 'users', 'clientes',
         ];
 
         if (!in_array($tableName, $prohibitedTables)) {

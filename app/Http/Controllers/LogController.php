@@ -19,6 +19,7 @@ class LogController extends Controller
             'author' => 'required|string',
             'ip' => 'nullable|string',
             'table' => 'required|string',
+            'cliente' => 'required|string|size:3|exists:clientes,codigo',
         ]);
 
         $table = $validated['table'];
@@ -26,6 +27,8 @@ class LogController extends Controller
         if (!Schema::hasTable($table)) {
             Schema::create($table, function (Blueprint $table) {
                 $table->bigIncrements('id');
+                $table->string('cliente', 3);
+                $table->foreign('cliente')->references('codigo')->on('clientes');
                 $table->string('author');
                 $table->string('ip')->nullable();
                 $table->timestamps();
@@ -47,6 +50,7 @@ class LogController extends Controller
             'date_start' => 'required|date',
             'date_finish' => 'required|date|after_or_equal:date_start',
             'author' => 'nullable|string|max:255',
+            'cliente' => 'nullable|string|size:3|exists:clientes,codigo',
         ]);
 
         if (!Schema::hasTable($validated['table'])) {
@@ -61,6 +65,10 @@ class LogController extends Controller
 
         if (!empty($validated['author'])) {
             $query->where('author', 'like', '%' . $validated['author'] . '%');
+        }
+
+        if (!empty($validated['cliente'])) {
+            $query->where('cliente', $validated['cliente']);
         }
 
         $results = $query->orderByDesc('created_at')->get();
